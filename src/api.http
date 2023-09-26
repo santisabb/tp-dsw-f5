@@ -1,0 +1,24 @@
+###OBTENER INFO
+GET http://localhost:8080/api/grills
+###CREAR INFO
+POST http://localhost:8080/api/grills
+Content-Type: application/json
+
+{
+    "avaible": false,
+    "grillDimentions": "4x1",
+    "grillType": "Gas grill"
+}
+###OBTENER INFO DE UNA ID
+GET http://localhost:8080/api/employees/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+###MODIFICAR INFO DE UNA ID
+PUT http://localhost:8080/api/employees/e7f9805c-6885-4170-a96b-2deabfac3de4
+Content-Type: application/json
+
+{
+    "avaible": false,
+    "grillDimentions": "4x1",
+    "grillType": "ponele carbon nomas mi rey"
+}
+###BORRAR INFO
+DELETE http://localhost:8080/api/employees/a02b91bc-3769-4221-beb1-d7a3aeba7dad
