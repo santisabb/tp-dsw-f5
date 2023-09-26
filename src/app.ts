@@ -1,11 +1,13 @@
-import express, { NextFunction, Request, RequestHandler, Response } from 'express'
-import { Employee } from './employees.js'
-import { Grill } from './grills.js'
-import { Field } from './fields.js'
-import { Receipt } from './receipts.js'
-import { User } from './users.js'
+import express, { NextFunction, Request, Response } from 'express'
+import { Employee } from './employee/employeesEntity.js'
+import { Grill } from './grill/grills.js'
+import { Field } from './field/fields.js'
+import { Receipt } from './receipt/receipts.js'
+import { User } from './user/users.js'
+import { EmployeeRepository } from './employee/employeeRepository.js'
 
 const app = express()
+const empRepo = new EmployeeRepository()
 
 app.use(express.json())
 
@@ -164,7 +166,7 @@ app.get('/api/grills', (req, res) => {
 })
 
 app.get('/api/employees', (req, res) => {
-    res.json(employees)
+    res.json({ data: empRepo.findAll() })
 })
 
 app.post('/api/users', sanitizeUserInput, (req, res) => {
@@ -226,7 +228,7 @@ app.post('/api/grills', sanitizeGrillInput,  (req, res) => {
 app.post('/api/employees', sanitizeEmployeeInput, (req, res) => {
     const input = req.body.sanitizedInput
 
-    const employee = new Employee(
+    const employeeInput = new Employee(
         input.employeeName, 
         input.employeeEmail, 
         input.employeeCuil, 
@@ -235,7 +237,7 @@ app.post('/api/employees', sanitizeEmployeeInput, (req, res) => {
         input.employeeStatus
         )
 
-    employees.push(employee)
+    const employee = empRepo.add(employeeInput)
 
     return res.status(201).send({ message:'Employee added successfully', data: employee})
 })
@@ -281,7 +283,9 @@ app.get('/api/fields/:fieldId', (req, res) => {
 })
 
 app.get('/api/employees/:employeeId', (req, res) => {
-    const employee = employees.find((employee) => employee.employeeId === req.params.employeeId)
+    const id = req.params.employeeId
+
+    const employee = empRepo.findOne({ id })
 
     if(!employee){
         return res.status(404).send({ message: 'Employee not found'})
@@ -339,15 +343,14 @@ app.put('/api/fields/:fieldId', sanitizeFieldInput, (req, res) => {
 })
 
 app.put('/api/employees/:employeeId', sanitizeEmployeeInput, (req, res) => {
-    const employeeIdx = employees.findIndex((employeeIdx) => employeeIdx.employeeId === req.params.employeeId)
+    req.body.sanitizedInput.employeeId = req.params.employeeId
+    const employee = empRepo.update(req.body.sanitizedInput)
 
-    if(employeeIdx === -1){
+    if(!employee){
         return res.status(404).send({ message: 'Employee not found'})
     }
 
-    employees[employeeIdx] = {...employees[employeeIdx],...req.body.sanitizedInput }
-
-    return res.status(200).send({ message: 'Employee successfully updated.', data: employees[employeeIdx] })
+    return res.status(200).send({ message: 'Employee successfully updated.', data: employee })
 })
 
 app.delete('/api/users/:userId', (req, res) => {
@@ -395,12 +398,12 @@ app.delete('/api/fields/:fieldId', (req, res) => {
 })
 
 app.delete('/api/employees/:employeeId', (req, res) => {
-    const employeeIdx = employees.findIndex((employeeIdx) => employeeIdx.employeeId === req.params.employeeId)
+    const id = req.params.employeeId
+    const employee = empRepo.delete({ id })
 
-    if(employeeIdx === -1){
+    if(!employee){
         return res.status(404).send({ message: 'Employee not found'})
     } else {
-        employees.splice(employeeIdx, 1)
         res.status(200).send({ message: 'Employee deleted successfully' })
     }
 })
