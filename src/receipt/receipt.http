@@ -1,0 +1,27 @@
+###OBTENER TODAS LAS FACTURAS
+GET http://localhost:8080/api/receipts
+###OBTENER UNA FACTURA
+GET http://localhost:8080/api/receipts/96785c2b-1af8-45f8-aa8d-a3870680105c
+###CREAR UNA FACTURA
+POST http://localhost:8080/api/receipts
+Content-Type: application/json
+
+{
+    "registeredName": "Razon Social(nombre)",
+    "receiptNumber": 1212,
+    "amount": 1234.56,
+    "paymentMethod": "Credito (visa)",
+    "receiptType": "A"
+}
+###MODIFICAR UNA FACTURA
+PUT http://localhost:8080/api/receipts/9d4a3510-3b36-4a49-88bf-290d094cd7bb
+Content-Type: application/json
+
+{
+    "registeredName": "Cristian Pity Alvarez",
+    "receiptNumber": 14,
+    "amount": 2003.01,
+    "receiptType": "A"
+}
+###ELIMINAR UNA FACTURA
+DELETE http://localhost:8080/api/receipts/c7807767-1c13-4540-8c96-07bd97784b44

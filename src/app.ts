@@ -1,13 +1,21 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { Employee } from './employee/employeesEntity.js'
-import { Grill } from './grill/grills.js'
-import { Field } from './field/fields.js'
-import { Receipt } from './receipt/receipts.js'
-import { User } from './user/users.js'
+import { Grill } from './grill/grillsEntity.js'
+import { Field } from './field/fieldsEntity.js'
+import { Receipt } from './receipt/receiptsEntity.js'
+import { User } from './user/usersEntity.js'
 import { EmployeeRepository } from './employee/employeeRepository.js'
+import { FieldRepository } from './field/fieldRepository.js'
+import { GrillRepository } from './grill/grillRepository.js'
+import { ReceiptRepository } from './receipt/receiptRepository.js'
+import { UserRepository } from './user/userRepository.js'
 
 const app = express()
 const empRepo = new EmployeeRepository()
+const fieldRepo = new FieldRepository()
+const grillRepo = new GrillRepository()
+const recptRepo = new ReceiptRepository()
+const userRepo = new UserRepository()
 
 app.use(express.json())
 
@@ -149,20 +157,20 @@ function sanitizeUserInput(req: Request, res: Response, next: NextFunction) {
 }
 
 app.get('/api/users', (req, res) => {
-    res.json(users)
+    res.json({ data: userRepo.findAll() })
 })
 
 
 app.get('/api/receipts', (req, res) => {
-    res.json(receipts)
+    res.json({ data: recptRepo.findAll() })
 })
 
 app.get('/api/fields', (req, res) => {
-    res.json(fields)
+    res.json({ data: fieldRepo.findAll() })
 })
 
 app.get('/api/grills', (req, res) => {
-    res.json(grills)
+    res.json({ data: grillRepo.findAll() })
 })
 
 app.get('/api/employees', (req, res) => {
@@ -172,7 +180,7 @@ app.get('/api/employees', (req, res) => {
 app.post('/api/users', sanitizeUserInput, (req, res) => {
     const input = req.body.sanitizedInput
 
-    const user = new User(
+    const userInput = new User(
         input.userName,
         input.userEmail,
         input.userDni,
@@ -180,7 +188,7 @@ app.post('/api/users', sanitizeUserInput, (req, res) => {
         input.totalReserves
     )
 
-    users.push(user)
+    const user = userRepo.add(userInput)
 
     return res.status(201).send({ message:'User added successfully'})
 })
@@ -188,7 +196,7 @@ app.post('/api/users', sanitizeUserInput, (req, res) => {
 app.post('/api/receipts', sanitizeReceiptInput, (req, res) => {
     const input = req.body.sanitizedInput
 
-    const receipt = new Receipt(
+    const receiptInput = new Receipt(
         input.registeredName,
         input.receiptNumber,
         input.amount,
@@ -196,31 +204,31 @@ app.post('/api/receipts', sanitizeReceiptInput, (req, res) => {
         input.receiptType
         )
 
-    receipts.push(receipt)
+    const receipt = recptRepo.add(receiptInput)
 
-    return res.status(201).send({ message:'Receipt added successfully'})
+    return res.status(201).send({ message:'Receipt added successfully', data: receipt})
 })
 
 app.post('/api/fields', sanitizeFieldInput, (req, res) => {
     const input = req.body.sanitizedInput
 
-    const field = new Field(input.maxPlayers, input.fieldDimentions, input.avaible, input.grassType)
+    const fieldInput = new Field(input.maxPlayers, input.fieldDimentions, input.avaible, input.grassType)
 
-    fields.push(field)
+    const field = fieldRepo.add(fieldInput)
 
-    return res.status(201).send({ message:'Field added successfully'})
+    return res.status(201).send({ message:'Field added successfully', data: field})
 })
 
 app.post('/api/grills', sanitizeGrillInput,  (req, res) => {
     const input = req.body.sanitizedInput
 
-    const grill = new Grill(
+    const grillInput = new Grill(
         input.avaible,
         input.grillDimentions,
         input.grillType
     )
 
-    grills.push(grill)
+    const grill = grillRepo.add(grillInput)
 
     return res.status(201).send({ message:'Grill added successfully'})
 })
@@ -243,7 +251,9 @@ app.post('/api/employees', sanitizeEmployeeInput, (req, res) => {
 })
 
 app.get('/api/users/:userId', (req, res) => {
-    const user = users.find((users) => users.userId === req.params.userId)
+    const id = req.params.userId
+
+    const user = userRepo.findOne({ id })
 
     if(!user){
         return res.status(404).send({ message: 'User not found'})
@@ -253,7 +263,9 @@ app.get('/api/users/:userId', (req, res) => {
 })
 
 app.get('/api/receipts/:receiptId', (req, res) => {
-    const receipt = receipts.find((receipt) => receipt.receiptId === req.params.receiptId)
+    const id = req.params.receiptId
+
+    const receipt = recptRepo.findOne({ id })
 
     if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})
@@ -263,7 +275,9 @@ app.get('/api/receipts/:receiptId', (req, res) => {
 })
 
 app.get('/api/grills/:grillId', (req, res) => {
-    const grill = grills.find((grill) => grill.grillId === req.params.grillId)
+    const id = req.params.grillId
+
+    const grill = grillRepo.findOne( {id} )
 
     if(!grill){
         return res.status(404).send({ message: 'Grill not found'})
@@ -273,7 +287,9 @@ app.get('/api/grills/:grillId', (req, res) => {
 })
 
 app.get('/api/fields/:fieldId', (req, res) => {
-    const field = fields.find((field) => field.fieldId === req.params.fieldId)
+    const id = req.params.fieldId
+
+    const field = fieldRepo.findOne({ id })
 
     if(!field){
         return res.status(404).send({ message: 'Field not found'})
@@ -295,51 +311,47 @@ app.get('/api/employees/:employeeId', (req, res) => {
 })
 
 app.put('/api/users/:userId', sanitizeUserInput, (req, res) => {
-    const userIdx = users.findIndex((userIdx) => userIdx.userId === req.params.userId)
+    req.body.sanitizedInput.userId = req.params.userId
+    const user = userRepo.update(req.body.sanitizedInput)
 
-    if(userIdx === -1){
+    if(!user){
         return res.status(404).send({ message: 'User not found'})
     }
 
-    users[userIdx] = { ...users[userIdx], ...req.body.sanitizedInput }
-
-    return res.status(200).send({ message: 'User succefuly updated', data: users[userIdx] })
+    return res.status(200).send({ message: 'User succefuly updated', data: user })
 })
 
 app.put('/api/receipts/:receiptId', sanitizeReceiptInput, (req, res) => {
-    const receiptIdx = receipts.findIndex((receiptIdx) => receiptIdx.receiptId === req.params.receiptId)
+    req.body.sanitizedInput.receiptId = req.params.receiptId
+    const receipt = recptRepo.update(req.body.sanitizedInput)
 
-    if(receiptIdx === -1){
+    if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})
     }
 
-    receipts[receiptIdx] = { ...receipts[receiptIdx], ...req.body.sanitizedInput }
-
-    return res.status(200).send({ message: 'Receipt successfully updated.', data: receipts[receiptIdx] })
+    return res.status(200).send({ message: 'Receipt successfully updated.', data: receipt })
 })
 
 app.put('/api/grills/:grillId', sanitizeGrillInput, (req, res) => {
-    const grillIdx = grills.findIndex((grillIdx) => grillIdx.grillId === req.params.grillId)
+    req.body.sanitizedInput.grillId = req.params.grillId
+    const grill = grillRepo.update(req.body.sanitizedInput)
 
-    if(grillIdx === -1){
+    if(!grill){
         return res.status(404).send({ message: 'Grill not found'})
     }
 
-    grills[grillIdx] = {...grills[grillIdx],...req.body.sanitizedInput }
-
-    return res.status(200).send({ message: 'Grill successfully updated.', data: grills[grillIdx] })    
+    return res.status(200).send({ message: 'Grill successfully updated.', data: grill })    
 })
 
 app.put('/api/fields/:fieldId', sanitizeFieldInput, (req, res) => {
-    const fieldIdx = fields.findIndex((fieldIdx) => fieldIdx.fieldId === req.params.fieldId)
+    req.body.sanitizedInput.fieldId = req.params.fieldId
+    const field = fieldRepo.update(req.body.sanitizedInput)
 
-    if(fieldIdx === -1){
+    if(!field){
         return res.status(404).send({ message: 'Field not found'})
     }
 
-    fields[fieldIdx] = {...fields[fieldIdx],...req.body.sanitizedInput }
-
-    return res.status(200).send({ message: 'Field successfully updated.', data: fields[fieldIdx] })
+    return res.status(200).send({ message: 'Field successfully updated.', data: field })
 })
 
 app.put('/api/employees/:employeeId', sanitizeEmployeeInput, (req, res) => {
@@ -354,45 +366,46 @@ app.put('/api/employees/:employeeId', sanitizeEmployeeInput, (req, res) => {
 })
 
 app.delete('/api/users/:userId', (req, res) => {
-    const userIdx = users.findIndex((userIdx) => userIdx.userId === req.params.userId)
+    const id = req.params.userId
 
-    if(userIdx === -1){
+    const user = userRepo.delete({ id })
+
+    if(!user){
         return res.status(404).send({ message: 'User not found'})
     } else {
-        users.splice(userIdx, 1)
         res.status(200).send({ message: 'User deleted successfully' })
     }
 })
 
 app.delete('/api/receipts/:receiptId', (req, res) => {
-    const receiptIdx = receipts.findIndex((receiptIdx) => receiptIdx.receiptId === req.params.receiptId)
+    const id = req.params.receiptId
+    const receipt = recptRepo.delete({ id })
     
-    if(receiptIdx === -1){
+    if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})
     } else{
-        receipts.splice(receiptIdx, 1)
         res.status(200).send({ message: 'Receipt deleted successfully' })
     }
 })
 
 app.delete('/api/grills/:grillId', (req, res) => {
-    const grillIdx = grills.findIndex((grillIdx) => grillIdx.grillId === req.params.grillId)
+    const id = req.params.grillId
+    const grill = grillRepo.delete({ id })
 
-    if(grillIdx === -1){
+    if(!grill){
         return res.status(404).send({ message: 'Grill deleted successfully' })
     } else{
-        grills.splice(grillIdx, 1)
         res.status(200).send({ message: 'Grill deleted successfully' })
     }
 })
 
 app.delete('/api/fields/:fieldId', (req, res) => {
-    const fieldIdx = fields.findIndex((fieldIdx) => fieldIdx.fieldId === req.params.fieldId)
+    const id = req.params.fieldId
+    const field = fieldRepo.delete({ id })
 
-    if(fieldIdx === -1){
+    if(!field){
         return res.status(404).send({ message: 'Field deleted successfully' })
     } else {
-        fields.splice(fieldIdx, 1)
         res.status(200).send({ message: 'Field deleted successfully' })
     }
 })

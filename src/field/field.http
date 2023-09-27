@@ -1,0 +1,26 @@
+###OBTENER TODAS LAS CANCHAS
+GET http://localhost:8080/api/fields
+###OBTENER UNA CANCHA
+GET http://localhost:8080/api/fields/fe91558d-9616-464c-b429-f42c4e19849d
+###CREAR UNA CANCHA
+POST http://localhost:8080/api/fields
+Content-Type: application/json
+
+{
+    "maxPlayers": 6,
+    "fieldDimentions": "12x18",
+    "avaible": true,
+    "grassType": "Sintetico"
+}
+###MODIFICAR UNA CANCHA
+PUT http://localhost:8080/api/fields/fe91558d-9616-464c-b429-f42c4e19849d
+Content-Type: application/json
+
+{
+        "maxPlayers": 6,
+    "fieldDimentions": "12x16",
+    "avaible": true,
+    "grassType": "Natural"
+}
+###ELIMINAR UNA CANCHA
+DELETE http://localhost:8080/api/fields/fe91558d-9616-464c-b429-f42c4e19849d

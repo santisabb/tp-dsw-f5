@@ -1,0 +1,28 @@
+###OBTENER TODOS LOS USUARIOS
+GET http://localhost:8080/api/users
+###OBTENER UN USUARIO
+GET http://localhost:8080/api/users/VvT1-knoS9-m0oSLo-mKp4N-T69a
+###CREAR UN USUARIO
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+    "userName": "Cristian Solar",
+    "userEmail": "indiointx@gmail.com",
+    "userDni": "numeriots",
+    "userPhone": "3407-daa",
+    "totalReserves": 0
+}
+###MODIFICAR UN USUARIO
+PUT http://localhost:8080/api/users/db4f058b-e1b1-4c92-8b0d-81b9ef0f6e7f
+Content-Type: application/json
+
+{
+    "userName": "Cristian Solari",
+    "userEmail": "indiointxd@gmail.com",
+    "userDni": "23521985",
+    "userPhone": "3407-440934",
+    "totalReserves": 11
+}
+###ELIMINAR UN USUARIO
+DELETE http://localhost:8080/api/users/b17d0da9-85ab-4ded-a183-07c506016907
