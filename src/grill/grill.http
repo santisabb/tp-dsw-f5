@@ -1,7 +1,7 @@
 ###OBTENEER TODAS LAS PARRILLAS
 GET http://localhost:8080/api/grills
 ###OBTENER UNA PARRILLA
-GET http://localhost:8080/api/grills/ae7834e3-57cf-49de-b6d2-c0e6fabad1e5
+GET http://localhost:8080/api/grills/ZhHpT-xTXQD-gixhh-hifm-uSC6G
 ###CREAR UNA PARRILLA
 POST http://localhost:8080/api/grills
 Content-Type: application/json
@@ -12,13 +12,12 @@ Content-Type: application/json
     "grillType": "para mujeres"
 }
 ###MODIFICAR UNA PARRILA
-PUT http://localhost:8080/api/grills/ae7834e3-57cf-49de-b6d2-c0e6fabad1e5
+PATCH  http://localhost:8080/api/grills/3b4ff6b2-620d-47ed-a417-8240d375d736
 Content-Type: application/json
 
 {
-        "avaible": true,
     "grillDimentions": "maso grande",
-    "grillType": "para mujeres"
+    "grillType": "para todes"
 }
 ###ELIMINAR UNA PARRILLA
-DELETE http://localhost:8080/api/grills/ae7834e3-57cf-49de-b6d2-c0e6fabad1e5
+DELETE http://localhost:8080/api/grills/8039c907-ef48-444c-899a-7f6ee076f2d4
