@@ -21,14 +21,14 @@ function sanitizeFieldInput(req: Request, res: Response, next: NextFunction){
     next()
 }
 
-function findAll(req: Request, res: Response){
-    res.json({ data: fieldRepo.findAll() })
+async function findAll(req: Request, res: Response){
+    res.json({ data: await fieldRepo.findAll() })
 }
 
-function findOne(req: Request, res: Response){
+async function findOne(req: Request, res: Response){
     const id = req.params.fieldId
 
-    const field = fieldRepo.findOne({ id })
+    const field = await fieldRepo.findOne({ id })
 
     if(!field){
         return res.status(404).send({ message: 'Field not found'})
@@ -37,19 +37,19 @@ function findOne(req: Request, res: Response){
     res.json({ data: field })
 }
 
-function add(req: Request, res: Response){
+async function add(req: Request, res: Response){
     const input = req.body.sanitizedInput
 
     const fieldInput = new Field(input.maxPlayers, input.fieldDimentions, input.avaible, input.grassType)
 
-    const field = fieldRepo.add(fieldInput)
+    const field = await fieldRepo.add(fieldInput)
 
     return res.status(201).send({ message:'Field added successfully', data: field})
 }
 
-function update(req: Request, res: Response){
+async function update(req: Request, res: Response){
     req.body.sanitizedInput.fieldId = req.params.fieldId
-    const field = fieldRepo.update(req.body.sanitizedInput)
+    const field = await fieldRepo.update(req.body.sanitizedInput)
 
     if(!field){
         return res.status(404).send({ message: 'Field not found'})
@@ -58,9 +58,9 @@ function update(req: Request, res: Response){
     return res.status(200).send({ message: 'Field successfully updated.', data: field })
 }
 
-function remove(req: Request, res: Response){
+async function remove(req: Request, res: Response){
     const id = req.params.fieldId
-    const field = fieldRepo.delete({ id })
+    const field = await fieldRepo.delete({ id })
 
     if(!field){
         return res.status(404).send({ message: 'Field deleted successfully' })

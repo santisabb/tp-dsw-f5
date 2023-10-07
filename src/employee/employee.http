@@ -24,4 +24,4 @@ Content-Type: application/json
     "employeeCuil": "18-44514687-7"
 }
 ###BORRAR INFO
-DELETE http://localhost:8080/api/employees/dc088de4-ee51-43ae-a831-0f4ff3e5f188
+DELETE http://localhost:8080/api/employees/d8a4cdff-4618-4d0d-a5c0-08dd29110ef0

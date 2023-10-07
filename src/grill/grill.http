@@ -12,7 +12,7 @@ Content-Type: application/json
     "grillType": "para mujeres"
 }
 ###MODIFICAR UNA PARRILA
-PATCH  http://localhost:8080/api/grills/3b4ff6b2-620d-47ed-a417-8240d375d736
+PATCH  http://localhost:8080/api/grills/06aaf94e-f247-4de6-8f77-9f07ce1b8ffe
 Content-Type: application/json
 
 {
@@ -20,4 +20,4 @@ Content-Type: application/json
     "grillType": "para todes"
 }
 ###ELIMINAR UNA PARRILLA
-DELETE http://localhost:8080/api/grills/8039c907-ef48-444c-899a-7f6ee076f2d4
+DELETE http://localhost:8080/api/grills/fef1008a-35ca-4342-8ac2-d5db24f7e907

@@ -12,21 +12,21 @@ const fields : Field[] = [
 ]
 
 export class FieldRepository implements repository<Field>{
-    public findAll(): Field[] | undefined {
-        return fields
+    public async findAll(): Promise <Field[] | undefined> {
+        return await fields
     }
 
-    public findOne(i: { id: string; }): Field | undefined {
-        return fields.find((field) => field.fieldId === i.id)
+    public async findOne(i: { id: string; }): Promise <Field | undefined> {
+        return await fields.find((field) => field.fieldId === i.id)
     }
 
-    public add(i: Field): Field | undefined {
-        fields.push(i)
+    public async add(i: Field): Promise <Field | undefined> {
+        await fields.push(i)
         return i
     }
 
-    public update(i: Field): Field | undefined {
-        const index = fields.findIndex((field) => field.fieldId === i.fieldId)
+    public async update(i: Field): Promise <Field | undefined> {
+        const index = await fields.findIndex((field) => field.fieldId === i.fieldId)
 
         if(index!==-1){
             fields[index] = { ...fields[index], ...i }
@@ -35,8 +35,8 @@ export class FieldRepository implements repository<Field>{
         return fields[index]
     }
 
-    public delete(i: {id:string}): Field | undefined {
-        const index = fields.findIndex((field) => field.fieldId === i.id)
+    public async delete(i: {id:string}): Promise <Field | undefined> {
+        const index = await fields.findIndex((field) => field.fieldId === i.id)
 
         if(index!== -1){
             const deletedField = fields.splice(index, 1)

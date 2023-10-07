@@ -21,4 +21,4 @@ Content-Type: application/json
     "registeredName": "Cristian Alvarez"
 }
 ###ELIMINAR UNA FACTURA
-DELETE http://localhost:8080/api/receipts/8d6c5f59-bc10-4cbe-bab0-1ee4c4ea6fc5
+DELETE http://localhost:8080/api/receipts/27a5d09f-806f-4fa0-9532-75a3b00de911

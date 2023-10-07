@@ -11,21 +11,21 @@ const grills : Grill[] = [
 ]
 
 export class GrillRepository implements repository<Grill>{
-    public findAll(): Grill[] | undefined {
-        return grills
+    public async findAll(): Promise <Grill[] | undefined> {
+        return await grills
     }
 
-    public findOne(i: { id: string; }): Grill | undefined {
-        return grills.find((grill) => grill.grillId === i.id)
+    public async findOne(i: { id: string; }): Promise <Grill | undefined> {
+        return await grills.find((grill) => grill.grillId === i.id)
     }
 
-    public add(i: Grill): Grill | undefined {
-        grills.push(i)
+    public async add(i: Grill): Promise <Grill | undefined> {
+        await grills.push(i)
         return i
     }
 
-    public update(i: Grill): Grill | undefined {
-        const grillIdx = grills.findIndex((grill) => grill.grillId === i.grillId)
+    public async update(i: Grill): Promise <Grill | undefined> {
+        const grillIdx = await grills.findIndex((grill) => grill.grillId === i.grillId)
 
         if (grillIdx!== -1) {
             grills[grillIdx] = {  ...grills[grillIdx], ...i }
@@ -34,8 +34,8 @@ export class GrillRepository implements repository<Grill>{
         return grills[grillIdx]
     }
 
-    public delete(i: { id: string; }): Grill | undefined {
-        const grillIdx = grills.findIndex((grill) => grill.grillId === i.id)
+    public async delete(i: { id: string; }): Promise <Grill | undefined> {
+        const grillIdx = await grills.findIndex((grill) => grill.grillId === i.id)
 
         if (grillIdx!== -1) {
             const deletedGrill = grills.splice(grillIdx, 1)

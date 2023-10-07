@@ -21,14 +21,14 @@ function sanitizeReceiptInput(req: Request, res: Response, next: NextFunction) {
     next()
 }
 
-function findAll(req: Request, res: Response){
-    res.json({ data: receiptRepo.findAll() })
+async function findAll(req: Request, res: Response){
+    res.json({ data: await receiptRepo.findAll() })
 }
 
-function findOne(req: Request, res: Response){
+async function findOne(req: Request, res: Response){
     const id = req.params.receiptId
 
-    const receipt = receiptRepo.findOne({ id })
+    const receipt = await receiptRepo.findOne({ id })
 
     if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})
@@ -37,7 +37,7 @@ function findOne(req: Request, res: Response){
     res.json({ data: receipt })
 }
 
-function add(req: Request, res: Response){
+async function add(req: Request, res: Response){
     const input = req.body.sanitizedInput
 
     const receiptInput = new Receipt(
@@ -48,14 +48,14 @@ function add(req: Request, res: Response){
         input.receiptType
         )
 
-    const receipt = receiptRepo.add(receiptInput)
+    const receipt = await receiptRepo.add(receiptInput)
 
     return res.status(201).send({ message:'Receipt added successfully', data: receipt})
 }
 
-function update(req: Request, res: Response) {
+async function update(req: Request, res: Response) {
     req.body.sanitizedInput.receiptId = req.params.receiptId
-    const receipt = receiptRepo.update(req.body.sanitizedInput)
+    const receipt = await receiptRepo.update(req.body.sanitizedInput)
 
     if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})
@@ -64,9 +64,9 @@ function update(req: Request, res: Response) {
     return res.status(200).send({ message: 'Receipt successfully updated.', data: receipt })
 }
 
-function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response) {
     const id = req.params.receiptId
-    const receipt = receiptRepo.delete({ id })
+    const receipt = await receiptRepo.delete({ id })
     
     if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})

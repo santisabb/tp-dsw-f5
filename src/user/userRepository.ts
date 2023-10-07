@@ -13,21 +13,21 @@ const users : User[] = [
 ]
 
 export class UserRepository implements repository<User>{
-    public findAll(): User[] | undefined {
-        return users
+    public async findAll(): Promise <User[] | undefined> {
+        return await users
     }
 
-    public findOne(i: { id: string; }): User | undefined {
-        return users.find((users) => users.userId === i.id)
+    public async findOne(i: { id: string; }): Promise <User | undefined> {
+        return await users.find((users) => users.userId === i.id)
     }
 
-    public add(i: User): User | undefined {
-        users.push(i)
+    public async add(i: User): Promise <User | undefined> {
+        await users.push(i)
         return i
     }
 
-    public update(i: User): User | undefined {
-        const userIdx = users.findIndex((user) => user.userId === i.userId)
+    public async update(i: User): Promise <User | undefined> {
+        const userIdx = await users.findIndex((user) => user.userId === i.userId)
 
         if (userIdx !== -1){
             users[userIdx] = { ...users[userIdx], ...i}
@@ -36,8 +36,8 @@ export class UserRepository implements repository<User>{
         return users[userIdx]
     }
 
-    public delete(i: { id: string; }): User | undefined {
-        const userIdx = users.findIndex((user) => user.userId === i.id)
+    public async delete(i: { id: string; }): Promise <User | undefined> {
+        const userIdx = await users.findIndex((user) => user.userId === i.id)
 
         if (userIdx !== -1){
             const deletedUser = users.splice(userIdx, 1)

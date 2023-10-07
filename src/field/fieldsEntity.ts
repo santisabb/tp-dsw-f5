@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import crypto from 'node:crypto'
 
 export class Field{
@@ -6,6 +7,7 @@ export class Field{
         public fieldDimentions: string,
         public avaible: boolean,
         public grassType: string,
-        public fieldId = crypto.randomUUID()
+        public fieldId = crypto.randomUUID(),
+        public field_id = ObjectId
     ) {}
 }

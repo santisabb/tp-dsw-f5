@@ -1,7 +1,7 @@
 ###OBTENER TODOS LOS USUARIOS
 GET http://localhost:8080/api/users
 ###OBTENER UN USUARIO
-GET http://localhost:8080/api/users/
+GET http://localhost:8080/api/users/VvT1-knoS9-m0oSLo-mKp4N-T69a
 ###CREAR UN USUARIO
 POST http://localhost:8080/api/users
 Content-Type: application/json
@@ -14,7 +14,7 @@ Content-Type: application/json
     "totalReserves": 0
 }
 ###MODIFICAR UN USUARIO
-PATCH  http://localhost:8080/api/users/c15dd914-9494-441f-b340-9fe9a7cf3cad
+PATCH  http://localhost:8080/api/users/VvT1-knoS9-m0oSLo-mKp4N-T69a
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
     "userPhone": "3407412074"
 }
 ###ELIMINAR UN USUARIO
-DELETE http://localhost:8080/api/users/5780a683-66bb-4597-b056-055b336029ca
+DELETE http://localhost:8080/api/users/34c481ad-fa02-4631-b10e-a2f3c137b455

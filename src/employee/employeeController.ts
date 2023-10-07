@@ -22,14 +22,14 @@ function sanitizeEmployeeInput(req: Request, res:Response, next: NextFunction){
     next()
 }
 
-function findAll(req: Request, res: Response){
-    res.json({ data: employeeRepo.findAll() })
+async function findAll(req: Request, res: Response){
+    res.json({ data: await employeeRepo.findAll() })
 }
 
-function findOne(req: Request, res: Response){
+async function findOne(req: Request, res: Response){
     const id = req.params.employeeId
 
-    const employee = employeeRepo.findOne({ id })
+    const employee = await employeeRepo.findOne({ id })
 
     if(!employee){
         return res.status(404).send({ message: 'Employee not found'})
@@ -38,7 +38,7 @@ function findOne(req: Request, res: Response){
     res.json({ data: employee })
 }
 
-function add(req: Request, res: Response){
+async function add(req: Request, res: Response){
     const input = req.body.sanitizedInput
 
     const employeeInput = new Employee(
@@ -50,14 +50,14 @@ function add(req: Request, res: Response){
         input.employeeStatus
         )
 
-    const employee = employeeRepo.add(employeeInput)
+    const employee = await employeeRepo.add(employeeInput)
 
     return res.status(201).send({ message:'Employee added successfully', data: employee})
 }
 
-function update(req: Request, res: Response){
+async function update(req: Request, res: Response){
     req.body.sanitizedInput.employeeId = req.params.employeeId
-    const employee = employeeRepo.update(req.body.sanitizedInput)
+    const employee = await employeeRepo.update(req.body.sanitizedInput)
 
     if(!employee){
         return res.status(404).send({ message: 'Employee not found'})
@@ -66,9 +66,9 @@ function update(req: Request, res: Response){
     return res.status(200).send({ message: 'Employee successfully updated.', data: employee })
 }
 
-function remove(req: Request, res: Response){
+async function remove(req: Request, res: Response){
     const id = req.params.employeeId
-    const employee = employeeRepo.delete({ id })
+    const employee = await employeeRepo.delete({ id })
 
     if(!employee){
         return res.status(404).send({ message: 'Employee not found'})

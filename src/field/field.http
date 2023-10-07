@@ -13,7 +13,7 @@ Content-Type: application/json
     "grassType": "Sintetico"
 }
 ###MODIFICAR UNA CANCHA
-PATCH  http://localhost:8080/api/fields/74bcf1a6-8935-4c50-bdca-78026940c023
+PATCH  http://localhost:8080/api/fields/2962142e-3599-4855-a659-e529c242542f
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
     "grassType": "Natural"
 }
 ###ELIMINAR UNA CANCHA
-DELETE http://localhost:8080/api/fields/e2e9d456-b4d7-4636-92bc-95c93d8d422c
+DELETE http://localhost:8080/api/fields/5c0d29ca-5438-413b-9bb7-314d4dac696d

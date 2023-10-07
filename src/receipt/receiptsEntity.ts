@@ -1,4 +1,5 @@
 import crypto, { randomUUID } from 'crypto'
+import { ObjectId } from 'mongodb';
 
 export class Receipt {
     constructor (
@@ -7,6 +8,7 @@ export class Receipt {
         public amount: number,
         public paymentMethod: string,
         public receiptType: string,
-        public receiptId = crypto.randomUUID()
+        public receiptId = crypto.randomUUID(),
+        public receipt_id = ObjectId
     ) {}
 }

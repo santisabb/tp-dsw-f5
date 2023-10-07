@@ -13,21 +13,21 @@ const receipts : Receipt[] = [
 ]
 
 export class ReceiptRepository implements repository<Receipt>{
-    public findAll(): Receipt[] | undefined {
-        return receipts
+    public async findAll(): Promise <Receipt[] | undefined> {
+        return await receipts
     }
 
-    public findOne(i: { id: string; }): Receipt | undefined {
-        return receipts.find((receipt) => receipt.receiptId === i.id)
+    public async findOne(i: { id: string; }): Promise <Receipt | undefined> {
+        return await receipts.find((receipt) => receipt.receiptId === i.id)
     }
 
-    public add(i: Receipt): Receipt | undefined {
-        receipts.push(i)
+    public async add(i: Receipt): Promise <Receipt | undefined> {
+        await receipts.push(i)
         return i
     }
 
-    public update(i: Receipt): Receipt | undefined {
-        const index = receipts.findIndex((receipt) => receipt.receiptId === i.receiptId)
+    public async update(i: Receipt): Promise <Receipt | undefined> {
+        const index = await receipts.findIndex((receipt) => receipt.receiptId === i.receiptId)
 
         if (index !== -1) {
             receipts[index] = {...receipts[index], ...i}
@@ -36,8 +36,8 @@ export class ReceiptRepository implements repository<Receipt>{
         return receipts[index]
     }
 
-    public delete(i: { id: string; }): Receipt | undefined {
-        const index = receipts.findIndex((receipt) => receipt.receiptId === i.id)
+    public async delete(i: { id: string; }): Promise <Receipt | undefined> {
+        const index = await receipts.findIndex((receipt) => receipt.receiptId === i.id)
 
         if (index!== -1) {
             const deletedReceipt = receipts.splice(index, 1)

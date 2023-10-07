@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import crypto from 'node:crypto'
 
 export class Grill{
@@ -5,6 +6,7 @@ export class Grill{
         public avaible: boolean,
         public grillDimentions: string,
         public grillType: string,
-        public grillId = crypto.randomUUID()
+        public grillId = crypto.randomUUID(),
+        public grill_id = ObjectId
     ) {}
 }

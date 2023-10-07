@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import crypto from 'node:crypto'
 
 export class Employee{
@@ -8,6 +9,7 @@ export class Employee{
         public age: number,
         public ancient: number,
         public employeeStatus: boolean,
-        public employeeId = crypto.randomUUID()
+        public employeeId = crypto.randomUUID(),
+        public employee_id = ObjectId
     ) {}
 }
