@@ -5,23 +5,22 @@ POST http://localhost:8080/api/employees
 Content-Type: application/json
 
 {
-    "employeeName": "qcyo",
-    "employeeEmail": "qcyo@gmail.com",
-    "employeeCuil": "numeritos",
-    "age": 12,
-    "ancient": 6,
+    "employeeName": "un wachin",
+    "employeeEmail": "elpolaquito@gmail.com",
+    "employeeCuil": "22-47912350-0",
+    "age": 15,
+    "ancient": 3,
     "employeeStatus": true
 }
 ###OBTENER INFO DE UNA ID
-GET http://localhost:8080/api/employees/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+GET http://localhost:8080/api/employees/6524c42613ebc9f43c5c8cfd
 ###MODIFICAR INFO DE UNA ID
-PATCH  http://localhost:8080/api/employees/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PATCH  http://localhost:8080/api/employees/6524c3f813ebc9f43c5c8cfc
 Content-Type: application/json
 
 {
-    "employeeName": "Pepe Juanez",
-    "employeeEmail": "pepijnz@gmail.com",
-    "employeeCuil": "18-44514687-7"
+    "age": 22,
+    "ancient": 1
 }
 ###BORRAR INFO
-DELETE http://localhost:8080/api/employees/d8a4cdff-4618-4d0d-a5c0-08dd29110ef0
+DELETE http://localhost:8080/api/employees/6524c6b34d08613221762dc1

@@ -54,7 +54,7 @@ async function add(req: Request, res: Response){
 
 async function update(req: Request, res: Response){
     req.body.sanitizedInput.grillId = req.params.grillId
-    const grill = await grillRepo.update(req.body.sanitizedInput)
+    const grill = await grillRepo.update(req.params.grillId, req.body.sanitizedInput)
 
     if(!grill){
         return res.status(404).send({ message: 'Grill not found'})

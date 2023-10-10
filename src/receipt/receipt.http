@@ -1,24 +1,25 @@
 ###OBTENER TODAS LAS FACTURAS
 GET http://localhost:8080/api/receipts
 ###OBTENER UNA FACTURA
-GET http://localhost:8080/api/receipts/FOIPI4-JShI-e59v-vA6Gm-OjmJ5
+GET http://localhost:8080/api/receipts/652549341f43916782612390
 ###CREAR UNA FACTURA
 POST http://localhost:8080/api/receipts
 Content-Type: application/json
 
 {
-    "registeredName": "La puta de tu vieja",
-    "receiptNumber": 69,
-    "amount": 44477.69,
-    "paymentMethod": "tu hermana en 4",
+    "registeredName": "La yegua de tu hermana",
+    "receiptNumber": 1694,
+    "amount": 4923.29,
+    "paymentMethod": "una tirada de goma de tu vieja",
     "receiptType": "A"
 }
 ###MODIFICAR UNA FACTURA
-PATCH  http://localhost:8080/api/receipts/FOIPI4-JShI-e59v-vA6Gm-OjmJ5
+PATCH  http://localhost:8080/api/receipts/652547f9a41b4600691de87e
 Content-Type: application/json
 
 {
-    "registeredName": "Cristian Alvarez"
+    "registeredName": "Kevin Lonzo",
+    "receiptType": "B"
 }
 ###ELIMINAR UNA FACTURA
-DELETE http://localhost:8080/api/receipts/27a5d09f-806f-4fa0-9532-75a3b00de911
+DELETE http://localhost:8080/api/receipts/652549341f43916782612390

@@ -1,25 +1,25 @@
 ###OBTENER TODAS LAS CANCHAS
 GET http://localhost:8080/api/fields
 ###OBTENER UNA CANCHA
-GET http://localhost:8080/api/fields/BQB4oJhe-2ig5-2oTX-mGMl-pIz5
+GET http://localhost:8080/api/fields/6524c7e723b6b4aab148f7bf
 ###CREAR UNA CANCHA
 POST http://localhost:8080/api/fields
 Content-Type: application/json
 
 {
-    "maxPlayers": 6,
-    "fieldDimentions": "12x18",
+    "maxPlayers": 22,
+    "fieldDimentions": "re grande tiene que ser",
     "avaible": true,
-    "grassType": "Sintetico"
+    "grassType": "Potrero"
 }
 ###MODIFICAR UNA CANCHA
-PATCH  http://localhost:8080/api/fields/2962142e-3599-4855-a659-e529c242542f
+PATCH  http://localhost:8080/api/fields/6524c883ce565e23a26d9e45
 Content-Type: application/json
 
 {
-    "fieldDimentions": "12x16",
+    "fieldDimentions": "30x90",
     "avaible": false,
     "grassType": "Natural"
 }
 ###ELIMINAR UNA CANCHA
-DELETE http://localhost:8080/api/fields/5c0d29ca-5438-413b-9bb7-314d4dac696d
+DELETE http://localhost:8080/api/fields/6524c8ea10b08593eb624cea

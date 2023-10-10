@@ -55,7 +55,7 @@ async function add(req: Request, res: Response){
 
 async function update(req: Request, res: Response) {
     req.body.sanitizedInput.receiptId = req.params.receiptId
-    const receipt = await receiptRepo.update(req.body.sanitizedInput)
+    const receipt = await receiptRepo.update(req.params.receiptId, req.body.sanitizedInput)
 
     if(!receipt){
         return res.status(404).send({ message: 'Receipt not found'})

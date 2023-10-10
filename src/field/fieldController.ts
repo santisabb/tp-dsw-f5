@@ -48,8 +48,7 @@ async function add(req: Request, res: Response){
 }
 
 async function update(req: Request, res: Response){
-    req.body.sanitizedInput.fieldId = req.params.fieldId
-    const field = await fieldRepo.update(req.body.sanitizedInput)
+    const field = await fieldRepo.update(req.params.fieldId, req.body.sanitizedInput)
 
     if(!field){
         return res.status(404).send({ message: 'Field not found'})

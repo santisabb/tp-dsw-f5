@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb"
+import { db } from "../shared/db/dbConnection.js"
 import { repository } from "../shared/repository.js"
 import { User } from "./usersEntity.js"
 
-const users : User[] = [
+const usersArray : User[] = [
     new User(
         'Nombre de usuario',
         'usermail@mail.com',
@@ -12,36 +14,30 @@ const users : User[] = [
     )
 ]
 
+const users = db.collection<User>('users')
+
 export class UserRepository implements repository<User>{
     public async findAll(): Promise <User[] | undefined> {
-        return await users
+        return await users.find().toArray()
     }
 
     public async findOne(i: { id: string; }): Promise <User | undefined> {
-        return await users.find((users) => users.userId === i.id)
+        const _id = new ObjectId(i.id)
+        return (await users.findOne({ _id })) || undefined
     }
 
     public async add(i: User): Promise <User | undefined> {
-        await users.push(i)
+        await users.insertOne(i)
         return i
     }
 
-    public async update(i: User): Promise <User | undefined> {
-        const userIdx = await users.findIndex((user) => user.userId === i.userId)
-
-        if (userIdx !== -1){
-            users[userIdx] = { ...users[userIdx], ...i}
-        }
-
-        return users[userIdx]
+    public async update(id: string, i: User): Promise <User | undefined> {
+        const _id = new ObjectId(id)
+        return (await users.findOneAndUpdate({ _id }, { $set:i}, { returnDocument: 'after'})) || undefined
     }
 
     public async delete(i: { id: string; }): Promise <User | undefined> {
-        const userIdx = await users.findIndex((user) => user.userId === i.id)
-
-        if (userIdx !== -1){
-            const deletedUser = users.splice(userIdx, 1)
-            return deletedUser[0]
-        }
+        const _id = new ObjectId(i.id)
+        return (await users.findOneAndDelete({ _id })) || undefined
     }
 }

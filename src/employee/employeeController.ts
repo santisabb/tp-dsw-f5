@@ -56,8 +56,7 @@ async function add(req: Request, res: Response){
 }
 
 async function update(req: Request, res: Response){
-    req.body.sanitizedInput.employeeId = req.params.employeeId
-    const employee = await employeeRepo.update(req.body.sanitizedInput)
+    const employee = await employeeRepo.update(req.params.employeeId, req.body.sanitizedInput)
 
     if(!employee){
         return res.status(404).send({ message: 'Employee not found'})

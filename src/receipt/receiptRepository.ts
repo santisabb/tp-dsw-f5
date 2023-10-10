@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb"
+import { db } from "../shared/db/dbConnection.js"
 import { repository } from "../shared/repository.js"
 import { Receipt } from "./receiptsEntity.js"
 
-const receipts : Receipt[] = [
+const receiptsArray : Receipt[] = [
     new Receipt(
         'Razon Social',
         12,
@@ -12,36 +14,30 @@ const receipts : Receipt[] = [
     )
 ]
 
+const receipts = db.collection<Receipt>('receipts')
+
 export class ReceiptRepository implements repository<Receipt>{
     public async findAll(): Promise <Receipt[] | undefined> {
-        return await receipts
+        return await receipts.find().toArray()
     }
 
     public async findOne(i: { id: string; }): Promise <Receipt | undefined> {
-        return await receipts.find((receipt) => receipt.receiptId === i.id)
+        const _id = new ObjectId(i.id)
+        return (await receipts.findOne({ _id })) || undefined
     }
 
     public async add(i: Receipt): Promise <Receipt | undefined> {
-        await receipts.push(i)
+        await receipts.insertOne(i)
         return i
     }
 
-    public async update(i: Receipt): Promise <Receipt | undefined> {
-        const index = await receipts.findIndex((receipt) => receipt.receiptId === i.receiptId)
-
-        if (index !== -1) {
-            receipts[index] = {...receipts[index], ...i}
-        }
-
-        return receipts[index]
+    public async update(id: string, i: Receipt): Promise <Receipt | undefined> {
+        const _id = new ObjectId(id)
+        return (await receipts.findOneAndUpdate({ _id }, { $set: i }, { returnDocument: 'after'})) || undefined
     }
 
     public async delete(i: { id: string; }): Promise <Receipt | undefined> {
-        const index = await receipts.findIndex((receipt) => receipt.receiptId === i.id)
-
-        if (index!== -1) {
-            const deletedReceipt = receipts.splice(index, 1)
-            return deletedReceipt[0]
-        }
+        const _id = new ObjectId(i.id)
+        return (await receipts.findOneAndDelete({ _id })) || undefined
     }
 }

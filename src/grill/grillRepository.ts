@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb"
+import { db } from "../shared/db/dbConnection.js"
 import { repository } from "../shared/repository.js"
 import { Grill } from "./grillsEntity.js"
 
-const grills : Grill[] = [
+const grillsArray : Grill[] = [
     new Grill(
         true,
         '3x2',
@@ -10,36 +12,30 @@ const grills : Grill[] = [
     )
 ]
 
+const grills = db.collection<Grill>('grills')
+
 export class GrillRepository implements repository<Grill>{
     public async findAll(): Promise <Grill[] | undefined> {
-        return await grills
+        return await grills.find().toArray()
     }
 
     public async findOne(i: { id: string; }): Promise <Grill | undefined> {
-        return await grills.find((grill) => grill.grillId === i.id)
+        const _id = new ObjectId(i.id)
+        return (await grills.findOne({ _id })) || undefined  
     }
 
     public async add(i: Grill): Promise <Grill | undefined> {
-        await grills.push(i)
+        await grills.insertOne(i)
         return i
     }
 
-    public async update(i: Grill): Promise <Grill | undefined> {
-        const grillIdx = await grills.findIndex((grill) => grill.grillId === i.grillId)
-
-        if (grillIdx!== -1) {
-            grills[grillIdx] = {  ...grills[grillIdx], ...i }
-        }
-
-        return grills[grillIdx]
+    public async update(id: string, i: Grill): Promise <Grill | undefined> {
+        const _id = new ObjectId(id)
+        return (await grills.findOneAndUpdate({ _id }, { $set: i}, { returnDocument: 'after' })) || undefined
     }
 
     public async delete(i: { id: string; }): Promise <Grill | undefined> {
-        const grillIdx = await grills.findIndex((grill) => grill.grillId === i.id)
-
-        if (grillIdx!== -1) {
-            const deletedGrill = grills.splice(grillIdx, 1)
-            return deletedGrill[0]
-        }
+        const _id = new ObjectId(i.id)
+        return (await grills.findOneAndDelete({ _id })) || undefined
     }
 }

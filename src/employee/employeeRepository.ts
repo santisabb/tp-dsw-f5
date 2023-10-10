@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb";
+import { db } from "../shared/db/dbConnection.js";
 import { repository } from "../shared/repository.js";
 import { Employee } from "./employeesEntity.js";
 
-const employees : Employee[] = [
+const employeesArray : Employee[] = [
     new Employee(
         'Nombre',
         'email@unmail.com',
@@ -13,36 +15,30 @@ const employees : Employee[] = [
     )
 ]
 
+const employees = db.collection<Employee>('employees')
+
 export class EmployeeRepository implements repository<Employee>{
     public async findAll(): Promise <Employee[] | undefined> {
-        return await employees
+        return await employees.find().toArray()
     }
 
     public async findOne(i: { id: string; }): Promise <Employee | undefined> {
-        return await employees.find((employee) => employee.employeeId === i.id)
-    }
+        const _id = new ObjectId(i.id)
+        return (await employees.findOne({ _id })) || undefined
+        }
 
     public async add(i: Employee): Promise <Employee | undefined> {
-        await employees.push(i)
+        await employees.insertOne(i)
         return i
     }
 
-    public async update(i: Employee): Promise <Employee | undefined> {
-        const employeeIdx = await employees.findIndex((employee) => employee.employeeId === i.employeeId)
-
-        if (employeeIdx!== -1) {
-            employees[employeeIdx] = { ...employees[employeeIdx], ...i}
-        }
-
-        return employees[employeeIdx]
+    public async update(id: string, i: Employee): Promise <Employee | undefined> {
+        const _id = new ObjectId(id)
+        return (await employees.findOneAndUpdate({ _id }, { $set: i }, { returnDocument:'after'})) || undefined
     }
 
     public async delete(i: { id: string; }): Promise <Employee | undefined> {
-        const employeeIdx = await employees.findIndex((employee) => employee.employeeId === i.id)
-
-        if(employeeIdx !== -1){
-            const deletedEmployee = employees.splice(employeeIdx, 1)
-            return deletedEmployee[0]
-        }
+        const _id = new ObjectId(i.id)
+        return (await employees.findOneAndDelete({ _id })) || undefined
     }
 }

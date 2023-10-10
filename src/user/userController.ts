@@ -56,7 +56,7 @@ async function add(req: Request, res: Response){
 
 async function update(req: Request, res: Response){
     req.body.sanitizedInput.userId = req.params.userId
-    const user = await userRepo.update(req.body.sanitizedInput)
+    const user = await userRepo.update(req.params.userId, req.body.sanitizedInput)
 
     if(!user){
         return res.status(404).send({ message: 'User not found'})

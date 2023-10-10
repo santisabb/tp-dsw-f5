@@ -1,7 +1,9 @@
 import { repository } from "../shared/repository.js"
 import { Field } from "./fieldsEntity.js"
+import { db } from "../shared/db/dbConnection.js"
+import { ObjectId } from "mongodb"
 
-const fields : Field[] = [
+const fieldsArray : Field[] = [
     new Field(
         5,
         '10x15',
@@ -11,36 +13,30 @@ const fields : Field[] = [
     )
 ]
 
+const fields = db.collection<Field>('fields')
+
 export class FieldRepository implements repository<Field>{
     public async findAll(): Promise <Field[] | undefined> {
-        return await fields
+        return await fields.find().toArray()
     }
 
     public async findOne(i: { id: string; }): Promise <Field | undefined> {
-        return await fields.find((field) => field.fieldId === i.id)
-    }
+        const _id = new ObjectId(i.id)
+        return (await fields.findOne({ _id })) || undefined
+}
 
     public async add(i: Field): Promise <Field | undefined> {
-        await fields.push(i)
+        await fields.insertOne(i)
         return i
     }
 
-    public async update(i: Field): Promise <Field | undefined> {
-        const index = await fields.findIndex((field) => field.fieldId === i.fieldId)
-
-        if(index!==-1){
-            fields[index] = { ...fields[index], ...i }
-        }
-
-        return fields[index]
+    public async update(id:string, i: Field): Promise <Field | undefined> {
+        const _id = new ObjectId(id)
+        return (await fields.findOneAndUpdate({ _id }, { $set: i}, { returnDocument: 'after'})) || undefined
     }
 
     public async delete(i: {id:string}): Promise <Field | undefined> {
-        const index = await fields.findIndex((field) => field.fieldId === i.id)
-
-        if(index!== -1){
-            const deletedField = fields.splice(index, 1)
-            return deletedField[0]
-        }
+        const _id = new ObjectId(i.id)
+        return (await fields.findOneAndDelete({ _id })) || undefined
     }
 }
