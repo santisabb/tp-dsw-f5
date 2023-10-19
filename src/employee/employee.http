@@ -15,7 +15,7 @@ Content-Type: application/json
 ###OBTENER INFO DE UNA ID
 GET http://localhost:8080/api/employees/6525fc05f4ee79d628951e9c
 ###MODIFICAR INFO DE UNA ID
-PATCH  http://localhost:8080/api/employees/6525fb64f4ee79d628951e9b
+PATCH  http://localhost:8080/api/employees/65318fb3a3467cdfcf5c0c27
 Content-Type: application/json
 
 {
@@ -25,4 +25,4 @@ Content-Type: application/json
     "ancient": 0
 }
 ###BORRAR INFO
-DELETE http://localhost:8080/api/employees/6525fce2f4ee79d628951e9d
+DELETE http://localhost:8080/api/employees/65318fc7a3467cdfcf5c0c28

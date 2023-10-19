@@ -1,7 +1,7 @@
 ###OBTENER TODOS LOS USUARIOS
 GET http://localhost:8080/api/users
 ###OBTENER UN USUARIO
-GET http://localhost:8080/api/users/VvT1-knoS9-m0oSLo-mKp4N-T69a
+GET http://localhost:8080/api/users/653191e9a3467cdfcf5c0c30
 ###CREAR UN USUARIO
 POST http://localhost:8080/api/users
 Content-Type: application/json
@@ -14,12 +14,14 @@ Content-Type: application/json
     "totalReserves": 0
 }
 ###MODIFICAR UN USUARIO
-PATCH  http://localhost:8080/api/users/VvT1-knoS9-m0oSLo-mKp4N-T69a
+PATCH  http://localhost:8080/api/users/65319192a3467cdfcf5c0c2f
 Content-Type: application/json
 
 {
     "userDni": "35418920",
-    "userPhone": "3407412074"
+    "userPhone": "3407412074",
+    "userName": "Enzo Kirchner",
+    "userEmail": "enzo5k@gmail.com"
 }
 ###ELIMINAR UN USUARIO
-DELETE http://localhost:8080/api/users/34c481ad-fa02-4631-b10e-a2f3c137b455
+DELETE http://localhost:8080/api/users/653191e9a3467cdfcf5c0c30

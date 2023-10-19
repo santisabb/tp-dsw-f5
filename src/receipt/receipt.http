@@ -1,7 +1,7 @@
 ###OBTENER TODAS LAS FACTURAS
 GET http://localhost:8080/api/receipts
 ###OBTENER UNA FACTURA
-GET http://localhost:8080/api/receipts/652549341f43916782612390
+GET http://localhost:8080/api/receipts/6531916fa3467cdfcf5c0c2e
 ###CREAR UNA FACTURA
 POST http://localhost:8080/api/receipts
 Content-Type: application/json
@@ -14,12 +14,12 @@ Content-Type: application/json
     "receiptType": "A"
 }
 ###MODIFICAR UNA FACTURA
-PATCH  http://localhost:8080/api/receipts/652547f9a41b4600691de87e
+PATCH  http://localhost:8080/api/receipts/653190d3a3467cdfcf5c0c2d
 Content-Type: application/json
 
 {
     "registeredName": "Kevin Lonzo",
-    "receiptType": "B"
+    "paymentMethod": "VISA"
 }
 ###ELIMINAR UNA FACTURA
-DELETE http://localhost:8080/api/receipts/652549341f43916782612390
+DELETE http://localhost:8080/api/receipts/6531916fa3467cdfcf5c0c2e

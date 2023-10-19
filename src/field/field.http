@@ -1,7 +1,7 @@
 ###OBTENER TODAS LAS CANCHAS
 GET http://localhost:8080/api/fields
 ###OBTENER UNA CANCHA
-GET http://localhost:8080/api/fields/6524c7e723b6b4aab148f7bf
+GET http://localhost:8080/api/fields/65318feea3467cdfcf5c0c29
 ###CREAR UNA CANCHA
 POST http://localhost:8080/api/fields
 Content-Type: application/json
@@ -13,7 +13,7 @@ Content-Type: application/json
     "grassType": "Potrero"
 }
 ###MODIFICAR UNA CANCHA
-PATCH  http://localhost:8080/api/fields/6524c883ce565e23a26d9e45
+PATCH  http://localhost:8080/api/fields/65318feea3467cdfcf5c0c29
 Content-Type: application/json
 
 {
@@ -22,4 +22,4 @@ Content-Type: application/json
     "grassType": "Natural"
 }
 ###ELIMINAR UNA CANCHA
-DELETE http://localhost:8080/api/fields/6524c8ea10b08593eb624cea
+DELETE http://localhost:8080/api/fields/65319003a3467cdfcf5c0c2a
